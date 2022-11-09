@@ -1,20 +1,15 @@
 let cards = document.querySelector('.cards');
 
-fetch('https://rickandmortyapi.com/api/character').then((response) => {
-    return response.json()
-}).then((data) => {
-    renderCards(data)
-})
-
-let search = (hero) => {
-    fetch(`https://rickandmortyapi.com/api/character?name=${hero}`).then((response) => {
+function fetchOne (url, fun) {
+    fetch(url).then((response) => {
         return response.json()
     }).then((data) => {
-        console.log(data)
-    })}
+        fun(data);
+    })
+
+}
 
 let renderCards = (heroes) => {
-    console.log(heroes)
     heroes.results.forEach(item => {
         cards.innerHTML += `
         <div class="card">
@@ -26,6 +21,24 @@ let renderCards = (heroes) => {
         `
     });
 }
+
+let search = (hero) => {
+    fetch(`https://rickandmortyapi.com/api/character?name=${hero}`).then((response) => {
+        return response.json()
+    }).then((data) => {
+        cards.innerHTML = '';
+        data.results.forEach(item => {
+            cards.innerHTML += `
+            <div class="card">
+                <img src='${item.image}'></img>
+                <div class="card__name">${item.name}</div>
+                <div class="card__origin">${item.origin.name}</div>
+                <button class="card__btn" onclick="renderPopup(${item.id})">More</button>
+            </div>
+            `
+        });
+})}
+
 
 let renderPopup = (id) => {
     fetch(`https://rickandmortyapi.com/api/character/${id}`).then((response) => {
@@ -53,3 +66,5 @@ let renderPopup = (id) => {
 let popupRemove = () => {
     document.querySelector('.popup').remove();
 }
+
+fetchOne('https://rickandmortyapi.com/api/character', renderCards);
