@@ -1,12 +1,18 @@
 let cards = document.querySelector('.cards');
 let page = document.querySelector('.page');
 let pageNumber = document.querySelector('.page__number');
+let mask = document.querySelector('.mask');
+
+/*window.addEventListener('load', () => {
+    mask.classList.add('hidden')
+})*/
 
 async function getData (url) {
     const result = await fetch(`${url}`);
     if(!result.ok) {
         throw new Error(`Error status:" ${res.status} from ${res.url}`);
     }
+    document.body.classList.remove('cls');
     return result.json();
 }
 
@@ -21,6 +27,7 @@ let renderCards = (heroes) => {
             </div>
         `
     });
+    document.querySelector('.mask').classList.add('hidden')
 }
 
 getData('https://rickandmortyapi.com/api/character').then((data) => {
@@ -88,7 +95,4 @@ page.addEventListener('click', (e) => {
         changePage(count);
     }
 })
-
-let card = document.querySelector('.card');
-console.log(card)
 
