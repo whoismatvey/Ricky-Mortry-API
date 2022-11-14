@@ -1,31 +1,34 @@
 let cards = document.querySelector('.cards');
+let page = document.querySelector('.page');
+let pageNumber = document.querySelector('.page__number');
 
-function fetchOne (url, fun) {
-    fetch(url).then((response) => {
-        return response.json()
-    }).then((data) => {
-        fun(data);
-    })
-
+async function getData (url) {
+    const result = await fetch(`${url}`);
+    if(!result.ok) {
+        throw new Error(`Error status:" ${res.status} from ${res.url}`);
+    }
+    return result.json();
 }
 
 let renderCards = (heroes) => {
     heroes.results.forEach(item => {
         cards.innerHTML += `
-        <div class="card">
-            <img src='${item.image}'></img>
-            <div class="card__name">${item.name}</div>
-            <div class="card__origin">${item.origin.name}</div>
-            <button class="card__btn" onclick="renderPopup(${item.id})">More</button>
-        </div>
+            <div class="card">
+                <img class="card__img" src='${item.image}'></img>
+                <div class="card__name">${item.name}</div>
+                <div class="card__origin">${item.origin.name}</div>
+                <button class="card__btn" onclick="renderPopup(${item.id})">More</button>
+            </div>
         `
     });
 }
 
+getData('https://rickandmortyapi.com/api/character').then((data) => {
+    renderCards(data);
+})
+
 let search = (hero) => {
-    fetch(`https://rickandmortyapi.com/api/character?name=${hero}`).then((response) => {
-        return response.json()
-    }).then((data) => {
+    getData(`https://rickandmortyapi.com/api/character?name=${hero}`).then((data) => {
         cards.innerHTML = '';
         data.results.forEach(item => {
             cards.innerHTML += `
@@ -67,4 +70,25 @@ let popupRemove = () => {
     document.querySelector('.popup').remove();
 }
 
-fetchOne('https://rickandmortyapi.com/api/character', renderCards);
+let count = 1;
+
+function changePage (page) {
+    getData(`https://rickandmortyapi.com/api/character?page=${page}`)
+}
+
+page.addEventListener('click', (e) => {
+    if(e.target.classList.contains('btn-left')) {
+        if(count > 1) {
+            pageNumber.value = --count;
+            changePage(count);
+        }
+    }
+    if(e.target.classList.contains('btn-right')) {
+        pageNumber.value = ++count;
+        changePage(count);
+    }
+})
+
+let card = document.querySelector('.card');
+console.log(card)
+

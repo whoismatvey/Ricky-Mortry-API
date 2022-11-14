@@ -214,3 +214,19 @@ td:last-child {
     padding: 16px;
     text-align: center;
 }
+
+.page {
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.page__number {
+    text-align: center;
+}
+
+.show {
+    background-color: red;
+}
+
+
