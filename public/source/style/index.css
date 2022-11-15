@@ -110,7 +110,6 @@ body {
 .container {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 0 15px;
 }
 
 .header {
@@ -282,31 +281,4 @@ td:last-child {
 
 .hidden {
     display: none;
-}
-
-@media(max-width: 620px) {
-	.header__logo {
-        width: 115px;
-    }
-
-    .header__search {
-        width: 190px;
-    }
-
-    .cards {
-        justify-content: center;
-    }
-
-    .page {
-        padding-top: 0;
-        padding-bottom: 60px;
-    }
-
-    .popup__content {
-        flex-direction: column;
-    }
-
-    .popup__close {
-        font-size: 18px;
-    }
 }
